@@ -1,0 +1,3 @@
+package repository
+import("context";"testing";"time";"github.com/11DingKing/autumn-grain-resilience/internal/domain";"github.com/11DingKing/autumn-grain-resilience/internal/storage")
+func TestTask019(t *testing.T){db,_:=storage.Open(":memory:");defer db.Close();_ = storage.Migrate(context.Background(),db);r:=TaskRepo{DB:db};_ = r.Create(context.Background(),domain.FieldTask{ID:"x",PlotID:"p",Kind:"k",Status:"in_progress",DueAt:time.Now(),Version:1});ok,e:=r.Transition(context.Background(),"x","in_progress","completed",1);if e!=nil||!ok{t.Fatal("current transition rejected",e)}}
