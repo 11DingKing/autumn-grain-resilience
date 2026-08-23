@@ -1,0 +1,3 @@
+package allocation
+import("context";"testing";"time")
+func TestTask024(t *testing.T){p:=New();_ = p.AddResource(Resource{ID:"pump",RegionID:"r",Kind:"drainage",Capacity:5,Available:5});_ = p.Submit(Request{ID:"req",RegionID:"r",ResourceKind:"drainage",Amount:5});grant,e:=p.Allocate(context.Background(),time.Now());if e!=nil{t.Fatal(e)};if e=p.Cancel(grant.ID);e!=nil{t.Fatal(e)};resource,_:=p.Resource("pump");if resource.Available!=5{t.Fatal("cancelled hold did not release capacity",resource.Available)}}
