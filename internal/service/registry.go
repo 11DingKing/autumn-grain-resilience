@@ -21,5 +21,5 @@ type Registry struct {
 func NewRegistry(db *sql.DB, logger *slog.Logger, cfg config.Config) *Registry {
 	audit := &AuditService{Repo: repository.AuditRepo{DB: db}, Logger: logger}
 	out := &repository.OutboxRepo{DB: db}
-	return &Registry{Auth: &AuthService{Users: repository.UserRepo{DB: db}, TTL: cfg.SessionTTL}, Monitoring: &MonitoringService{DB: db, Audit: audit, Outbox: out}, FieldTasks: &FieldTaskService{Repo: repository.TaskRepo{DB: db}, Plots: repository.PlotRepo{DB: db}, Audit: audit}, Disasters: &DisasterService{Repo: repository.DisasterRepo{DB: db}, Audit: audit}, Drying: &DryingService{Repo: repository.DryingRepo{DB: db}, Plots: repository.PlotRepo{DB: db}, Audit: audit}, Aid: &AidService{Repo: repository.AidRepo{DB: db}, Audit: audit}, Audit: audit, Outbox: out}
+	return &Registry{Auth: &AuthService{Users: repository.UserRepo{DB: db}, TTL: cfg.SessionTTL}, Monitoring: &MonitoringService{DB: db, Audit: audit, Outbox: out}, FieldTasks: &FieldTaskService{Repo: repository.TaskRepo{DB: db}, Plots: repository.PlotRepo{DB: db}, Audit: audit}, Disasters: &DisasterService{DB: db, Repo: repository.DisasterRepo{DB: db}, Audit: audit}, Drying: &DryingService{DB: db, Repo: repository.DryingRepo{DB: db}, Plots: repository.PlotRepo{DB: db}, Audit: audit}, Aid: &AidService{Repo: repository.AidRepo{DB: db}, Audit: audit}, Audit: audit, Outbox: out}
 }

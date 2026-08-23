@@ -34,10 +34,10 @@ func (s *MonitoringService) Record(ctx context.Context, obs domain.Observation, 
 			return domain.Alert{}, e
 		}
 	}
-	if e = tx.Commit(); e != nil {
+	if e = s.Audit.Repo.AppendTx(ctx, tx, domain.AuditEvent{ID: id("aud_"), ActorID: obs.ObserverID, Action: "record_observation", ObjectType: "observation", ObjectID: obs.ID, Result: "success", RequestID: request, CreatedAt: time.Now().UTC()}); e != nil {
 		return domain.Alert{}, e
 	}
-	if e = s.Audit.Record(ctx, obs.ObserverID, "record_observation", "observation", obs.ID, "success", request); e != nil {
+	if e = tx.Commit(); e != nil {
 		return domain.Alert{}, e
 	}
 	return alert, nil
