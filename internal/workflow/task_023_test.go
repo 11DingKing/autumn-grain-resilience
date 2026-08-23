@@ -1,0 +1,3 @@
+package workflow
+import("context";"errors";"testing")
+func TestTask023(t *testing.T){o:=[]string{};w:=New("w",[]Step{{ID:"a",Run:func(context.Context)error{return nil},Compensate:func(context.Context)error{o=append(o,"a");return nil}},{ID:"b",Run:func(context.Context)error{return nil},Compensate:func(context.Context)error{o=append(o,"b");return nil}},{ID:"c",Run:func(context.Context)error{return errors.New("x")}}});_ = w.Start(context.Background());_ = w.Cancel(context.Background());if len(o)!=2||o[0]!="b"||o[1]!="a"{t.Fatal("wrong compensation order",o)}}
