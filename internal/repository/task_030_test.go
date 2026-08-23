@@ -1,0 +1,3 @@
+package repository
+import("context";"testing";"github.com/11DingKing/autumn-grain-resilience/internal/domain";"github.com/11DingKing/autumn-grain-resilience/internal/storage")
+func TestTask030(t *testing.T){db,_:=storage.Open("task030.sqlite");db.SetMaxOpenConns(1);defer db.Close();_ = storage.Migrate(context.Background(),db);r:=RegionRepo{DB:db};if _,e:=db.Exec("INSERT INTO regions(id,name,parent_id,flood_risk) VALUES(?,?,?,?)","p","p",nil,"h");e!=nil{t.Fatal(e)};if e:=r.Create(context.Background(),domain.Region{ID:"c",Name:"c",ParentID:"p",FloodRisk:"m"});e!=nil{t.Fatal(e)};v,e:=r.ByID(context.Background(),"c");if e!=nil||v.ParentID!="p"{t.Fatal("parent lost",e,v.ParentID)}}
